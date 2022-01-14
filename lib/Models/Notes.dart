@@ -10,7 +10,7 @@ class Notes {
   Notes.fromjson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['Title'];
-    description = json['Discrimination '];
+    description = json['Discrimination'];
     color = json['Color'];
     Timestamp temdate = json['Date'];
     date = DateTime.fromMillisecondsSinceEpoch(temdate.seconds * 1000);
