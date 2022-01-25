@@ -14,6 +14,7 @@ class XasusQoreApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // themeMode:ThemeMode.system ,
       home: const Myhome(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

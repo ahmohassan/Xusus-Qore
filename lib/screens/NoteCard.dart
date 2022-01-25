@@ -31,7 +31,8 @@ class _NoteCardState extends State<NoteCard> {
               await handler(true);
               // list.removeAt(index);
               setState(() {
-                FirebaseFuncions().deletefun(widget.notes.id);
+                FirebaseFuncions.deletefun(widget.notes.id);
+                print(widget.notes.id);
               });
             },
             color: Colors.red),
@@ -79,7 +80,10 @@ class _NoteCardState extends State<NoteCard> {
                                 Icons.timer,
                                 color: Colors.grey,
                               ),
-                              CustomText(text: '20 minitis ago'),
+                              CustomText(
+                                text: ' ${widget.notes.date}',
+                                size: 10,
+                              ),
                             ],
                           ),
                           Padding(

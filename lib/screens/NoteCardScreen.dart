@@ -14,12 +14,13 @@ class _NoteCardScreenState extends State<NoteCardScreen> {
   Widget build(BuildContext context) {
     final int color = int.parse('0xff' + widget.notes.color);
     return Scaffold(
+      backgroundColor: Color(color),
       appBar: AppBar(
         title: CustomText(
           text: widget.notes.title,
-          size: 24,
-          color: Colors.black,
-          overflow: TextOverflow.ellipsis,
+          size: 34,
+          color: Colors.white,
+          fontWeight: FontWeight.w800,
         ),
         elevation: 0,
         backgroundColor: Colors.transparent,

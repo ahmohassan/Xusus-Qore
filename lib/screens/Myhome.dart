@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:somapp/Models/Notes.dart';
 import 'package:somapp/screens/exportScreens.dart';
 import 'package:somapp/widget/Widgets.dart';
 
@@ -14,45 +12,8 @@ class Myhome extends StatefulWidget {
 }
 
 class _MyhomeState extends State<Myhome> {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  // void getnote() async {
-  //   final NoteRef = firestore.collection('Notes');
-  //   final data = await NoteRef.get();
-  //   // NoteRef.doc('hlTsME0ZMWNNnxvFUC9E').delete();
-  //   // print(data.docs[1].data().toString());
-  //   Notes notes = Notes.fromjson(data.docs[0].data());
-  //   print(notes.date);
-
-  // }
-  // Future<Notes> getnote() async {
-  //   final NoteRef = firestore.collection('Notes');
-  //   final data = await NoteRef.get();
-  //   // NoteRef.doc('hlTsME0ZMWNNnxvFUC9E').delete();
-  //   // print(data.docs[1].data().toString());
-  //   Notes notes = Notes.fromjson(data.docs[0].data());
-  //   print(notes.date);
-  //   return notes;
-  // }
-  Future<List<Notes>> getnote() async {
-    final NoteRef = firestore.collection('Notes');
-    final data = await NoteRef.get();
-    // List<Notes> Mynotes = [];
-    // for (int index = 0; index < data.docs.length; index++) {
-    //   // Notes notes = Notes.fromjson(data.docs[index].data());
-    //   // Mynotes.add(notes);
-    //   Mynotes.add(Notes.fromjson(data.docs[index].data()));
-    // }
-    // return Mynotes;
-
-    return data.docs
-        .map((e) => Notes.fromjson(e.data()))
-        .toList(); // Simple to iterate data
-  }
-
   @override
   Widget build(BuildContext context) {
-    // getnote();
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
@@ -99,45 +60,23 @@ class _MyhomeState extends State<Myhome> {
             ),
 
             //View My note
-            Expanded(
-                child: FutureBuilder<List<Notes>>(
-                    future: getnote(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      // final data =  // getting data from firebasestore
-
-                      // return Text(data[0].title);
-                      if (snapshot.hasData) {
-                        final noteslist = snapshot.data!;
-                        return ListView.builder(
-                          itemCount: noteslist.length,
-                          itemBuilder: (context, index) {
-                            return NoteCard(
-                              notes: noteslist[index],
-                            );
-                          },
-                        );
-                      }
-
-                      return Text('There is no data');
-
-                      // return ListView.builder(
-                      //   itemCount: 1,
-                      //   itemBuilder: (context, index) {
-                      //     return NoteCard();
-                      //   },
-                      // );
-                    })),
+            ViewMyNotes(),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
+        backgroundColor: Colors.blueGrey,
+        elevation: 20,
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddNewNote(),
+              ));
+        },
+        child: Icon(
+          Icons.add,
+        ),
       ),
     );
   }
