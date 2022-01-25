@@ -32,7 +32,7 @@ class _NoteCardState extends State<NoteCard> {
               // list.removeAt(index);
               setState(() {
                 FirebaseFuncions.deletefun(widget.notes.id);
-                print(widget.notes.id);
+                // print(widget.notes.id);
               });
             },
             color: Colors.red),
