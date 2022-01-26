@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:somapp/functions/functions.dart';
 import 'package:somapp/widget/CustomText.dart';
 
@@ -35,6 +36,14 @@ class _AddNewNoteState extends State<AddNewNote> {
 
   final title = TextEditingController();
   final description = TextEditingController();
+
+  Color pickerColor = Color(0xff443a49);
+  // Color currentColor = Color(0xff443a49);
+
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,6 +91,29 @@ class _AddNewNoteState extends State<AddNewNote> {
               hintText: 'Write here your description',
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                    onTap: () => pickColor(context),
+                    child: CustomText(
+                      text: 'Pic Color ',
+                      color: Colors.black,
+                    )),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: pickerColor,
+                  ),
+                )
+              ],
+            ),
+            Row(
               children: [
                 Expanded(
                     child: IconButton(
@@ -101,6 +133,36 @@ class _AddNewNoteState extends State<AddNewNote> {
       ),
     );
   }
+
+  Widget buildColorPicker() => ColorPicker(
+        pickerColor: pickerColor,
+        onColorChanged: (color) => setState(() {
+          pickerColor = color;
+        }),
+      );
+
+  pickColor(BuildContext context) => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: CustomText(
+            text: 'Pic your color',
+            color: Colors.black,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              buildColorPicker(),
+              TextButton(
+                child: CustomText(
+                  text: 'Select',
+                  color: Colors.blue,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        ),
+      );
 }
 
 class CustomeTextField extends StatelessWidget {

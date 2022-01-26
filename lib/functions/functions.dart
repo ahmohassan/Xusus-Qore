@@ -11,6 +11,12 @@ class FirebaseFuncions {
     await noteRefrense.doc(id).delete();
   }
 
+  static Stream<List<Notes>> readNote() {
+    // final data = await noteRefrense.get();
+    return noteRefrense.snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => Notes.fromjson(doc.data())).toList());
+  }
+
   static Future<List<Notes>> getnote() async {
     final data = await noteRefrense.get();
 
