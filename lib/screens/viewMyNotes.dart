@@ -29,8 +29,10 @@ class ViewMyNotes extends StatelessWidget {
               );
             },
           );
+        } else if (snapshot.connectionState == ConnectionState.none) {
+          return const Center(child: Text('There is connection proplem'));
         }
-        return Text('There is no data');
+        return const Text('There is no data');
       },
     ));
   }

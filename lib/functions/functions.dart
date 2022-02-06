@@ -33,16 +33,14 @@ class FirebaseFuncions {
     Timestamp date,
   ) async {
     final id = FirebaseFirestore.instance.collection('Notes').doc().id;
-    noteRefrense
-        .doc(id)
-        .set({
-          'id': id,
-          'Title': title,
-          'Discrimination': description,
-          'Color': color,
-          'Date': date,
-        })
-        .then((value) => print('ID IS $id'))
-        .catchError((error) => print("Failed to add user: $error"));
+    noteRefrense.doc(id).set({
+      'id': id,
+      'Title': title,
+      'Discrimination': description,
+      'Color': color,
+      'Date': date,
+    });
+    // .then((value) => print('ID IS $id'))
+    // .catchError((error) => print("Failed to add user: $error"));
   }
 }

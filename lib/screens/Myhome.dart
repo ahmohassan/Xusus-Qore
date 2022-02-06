@@ -75,7 +75,7 @@ class _MyhomeState extends State<Myhome> {
               ));
         },
         child: Icon(
-          Icons.add,
+          Icons.note_alt,
         ),
       ),
     );

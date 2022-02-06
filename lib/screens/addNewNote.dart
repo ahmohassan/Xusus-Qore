@@ -2,12 +2,14 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:somapp/functions/functions.dart';
 import 'package:somapp/widget/CustomText.dart';
+import 'package:somapp/widget/Widgets.dart';
 
 class AddNewNote extends StatefulWidget {
-  AddNewNote({Key? key}) : super(key: key);
+  const AddNewNote({Key? key}) : super(key: key);
 
   @override
   State<AddNewNote> createState() => _AddNewNoteState();
@@ -47,88 +49,110 @@ class _AddNewNoteState extends State<AddNewNote> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomText(
-              text: 'Add New Note',
-              color: Colors.black,
-            ),
-            SizedBox(
-              height: 80,
-            ),
-            CustomeTextField(
-              mycontorller: title,
-              hintText: 'Enter your Title',
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomText(
-                    text: 'Choose Date',
-                    color: Colors.black,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    _selectDate(context);
-                  },
-                  icon: Icon(
-                    Icons.date_range,
-                  ),
-                ),
-                CustomText(
-                  text:
-                      '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
-                  color: Colors.black,
-                )
-              ],
-            ),
-            CustomeTextField(
-              mycontorller: description,
-              hintText: 'Write here your description',
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                    onTap: () => pickColor(context),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 50,
+              ),
+              CustomText(
+                text: 'Add New Note',
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CustomeTextField(
+                mycontorller: title,
+                hintText: 'Enter your Title',
+              ),
+              Row(
+                children: [
+                  Expanded(
                     child: CustomText(
-                      text: 'Pic Color ',
+                      text: 'Choose Date',
                       color: Colors.black,
-                    )),
-                SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: pickerColor,
+                    ),
                   ),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
+                  IconButton(
+                    onPressed: () {
+                      _selectDate(context);
+                    },
+                    icon: Icon(
+                      Icons.date_range,
+                    ),
+                  ),
+                  CustomText(
+                    text:
+                        '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
+                    color: Colors.black,
+                  )
+                ],
+              ),
+              CustomeTextField(
+                mycontorller: description,
+                hintText: 'Write here your description',
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                      onTap: () => pickColor(context),
+                      child: CustomText(
+                        text: 'Pic Color ',
+                        color: Colors.black,
+                      )),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: pickerColor,
+                    ),
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: Container(
+                    width: double.infinity,
+                    height: 56,
+                    margin: EdgeInsets.symmetric(horizontal: 1, vertical: 15),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: IconButton(
                         onPressed: () {
                           setState(() {
                             Timestamp myTimeStamp =
                                 Timestamp.fromDate(selectedDate);
-                            FirebaseFuncions.addUser(title.text,
-                                description.text, '32a852', myTimeStamp);
+                            FirebaseFuncions.addUser(
+                                title.text,
+                                description.text,
+                                pickerColor.toString(),
+                                myTimeStamp);
+                            print(pickerColor);
+                            FocusScope.of(context).requestFocus( FocusNode());
+                            description.clear();
+                            title.clear();
                           });
                         },
-                        icon: Icon(Icons.save))),
-              ],
-            )
-          ],
+                        icon: Icon(Icons.save)),
+                  )),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -136,6 +160,8 @@ class _AddNewNoteState extends State<AddNewNote> {
 
   Widget buildColorPicker() => ColorPicker(
         pickerColor: pickerColor,
+        showLabel: false,
+        enableAlpha: false,
         onColorChanged: (color) => setState(() {
           pickerColor = color;
         }),
@@ -165,30 +191,3 @@ class _AddNewNoteState extends State<AddNewNote> {
       );
 }
 
-class CustomeTextField extends StatelessWidget {
-  CustomeTextField({
-    this.hintText,
-    this.onChanged,
-    Key? key,
-    this.mycontorller,
-  }) : super(key: key);
-
-  void Function(String)? onChanged;
-  String? hintText;
-  final mycontorller;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: mycontorller,
-      onChanged: (value) {},
-      style: TextStyle(color: Colors.black, fontSize: 18),
-      decoration: InputDecoration(
-        suffix: Icon(Icons.save),
-        hintText: hintText,
-        contentPadding: EdgeInsets.all(18),
-        border: OutlineInputBorder(),
-      ),
-    );
-  }
-}

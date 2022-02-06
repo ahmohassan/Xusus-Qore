@@ -100,7 +100,8 @@ class _NoteCardState extends State<NoteCard> {
                       width: 40,
                       height: double.infinity,
                       decoration: BoxDecoration(
-                          color: Color(int.parse('0xff' + widget.notes.color)),
+                          // color: Color(int.parse('0xff' + widget.notes.color)),
+                          color: widget.notes.color,
                           borderRadius: BorderRadius.only(
                             topRight: Radius.circular(10),
                             bottomRight: Radius.circular(10),
