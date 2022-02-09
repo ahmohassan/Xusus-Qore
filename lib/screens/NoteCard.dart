@@ -47,10 +47,11 @@ class _NoteCardState extends State<NoteCard> {
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
               onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NoteCardScreen(notes: widget.notes),
-                  )),
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NoteCardScreen(notes: widget.notes),
+                ),
+              ),
               child: Container(
                 width: double.infinity,
                 height: 200,

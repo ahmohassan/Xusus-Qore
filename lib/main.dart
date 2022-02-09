@@ -15,6 +15,11 @@ class XasusQoreApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // themeMode:ThemeMode.system ,
+      initialRoute:Myhome.id,
+      routes: {
+        Myhome.id:(context)=>const Myhome(),
+        AddNewNote.id:(context)=>const AddNewNote(),
+      },
       home: const Myhome(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

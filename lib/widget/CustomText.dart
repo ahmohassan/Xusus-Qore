@@ -5,7 +5,7 @@ class CustomText extends StatelessWidget {
     required this.text,
     this.color,
     this.fontWeight,
-    this.onclick,
+    this.onPressed,
     this.size,
     this.wordspacing,
     this.overflow,
@@ -17,12 +17,12 @@ class CustomText extends StatelessWidget {
   final TextOverflow? overflow;
   final FontWeight? fontWeight;
   final double? wordspacing;
-  final VoidCallback? onclick;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: onclick == null
+      child: onPressed == null
           ? Text(
               text,
               style: TextStyle(
@@ -34,7 +34,7 @@ class CustomText extends StatelessWidget {
               ),
             )
           : TextButton(
-              onPressed: onclick,
+              onPressed: onPressed,
               child: Text(
                 text,
                 style: TextStyle(

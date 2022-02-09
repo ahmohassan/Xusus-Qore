@@ -7,6 +7,7 @@ import 'package:somapp/widget/Widgets.dart';
 class Myhome extends StatefulWidget {
   const Myhome({Key? key}) : super(key: key);
 
+  static String id = 'Home';
   @override
   _MyhomeState createState() => _MyhomeState();
 }
@@ -68,11 +69,12 @@ class _MyhomeState extends State<Myhome> {
         backgroundColor: Colors.blueGrey,
         elevation: 20,
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddNewNote(),
-              ));
+          Navigator.pushNamed(context, AddNewNote.id);
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => AddNewNote(),
+          //     ));
         },
         child: Icon(
           Icons.note_alt,

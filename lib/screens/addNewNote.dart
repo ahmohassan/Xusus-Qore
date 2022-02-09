@@ -1,16 +1,14 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:somapp/functions/functions.dart';
-import 'package:somapp/widget/CustomText.dart';
 import 'package:somapp/widget/Widgets.dart';
 
 class AddNewNote extends StatefulWidget {
   const AddNewNote({Key? key}) : super(key: key);
-
+static String id = 'AddNew note paage';
   @override
   State<AddNewNote> createState() => _AddNewNoteState();
 }
@@ -26,13 +24,19 @@ class _AddNewNoteState extends State<AddNewNote> {
     final DateTime? selected = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2010),
-      lastDate: DateTime(2025),
+      firstDate: DateTime(2016),
+      lastDate: DateTime(2050),
     );
-    if (selected != null && selected != selectedDate) {
-      setState(() {
-        selectedDate = selected;
-      });
+    try {
+      if (selected != null && selected != selectedDate) {
+        setState(
+          () {
+            selectedDate = selected;
+          },
+        );
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -40,7 +44,6 @@ class _AddNewNoteState extends State<AddNewNote> {
   final description = TextEditingController();
 
   Color pickerColor = Color(0xff443a49);
-  // Color currentColor = Color(0xff443a49);
 
   void changeColor(Color color) {
     setState(() => pickerColor = color);
@@ -72,11 +75,10 @@ class _AddNewNoteState extends State<AddNewNote> {
               ),
               Row(
                 children: [
-                  Expanded(
-                    child: CustomText(
-                      text: 'Choose Date',
-                      color: Colors.black,
-                    ),
+                  CustomText(
+                    onPressed: () => _selectDate(context),
+                    text: 'Choose Date',
+                    color: Colors.black,
                   ),
                   IconButton(
                     onPressed: () {
@@ -87,6 +89,7 @@ class _AddNewNoteState extends State<AddNewNote> {
                     ),
                   ),
                   CustomText(
+                    onPressed: () => _selectDate(context),
                     text:
                         '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
                     color: Colors.black,
@@ -100,22 +103,24 @@ class _AddNewNoteState extends State<AddNewNote> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                      onTap: () => pickColor(context),
-                      child: CustomText(
-                        text: 'Pic Color ',
-                        color: Colors.black,
-                      )),
+                  CustomText(
+                    onPressed: () => pickColor(context),
+                    text: 'Pic Color ',
+                    color: Colors.black,
+                  ),
                   SizedBox(
                     width: 20,
                   ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: pickerColor,
+                  GestureDetector(
+                    onTap: () => pickColor(context),
+                    child: Container(
+                      margin: EdgeInsets.all(10),
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: pickerColor,
+                      ),
                     ),
                   )
                 ],
@@ -141,8 +146,7 @@ class _AddNewNoteState extends State<AddNewNote> {
                                 description.text,
                                 pickerColor.toString(),
                                 myTimeStamp);
-                            print(pickerColor);
-                            FocusScope.of(context).requestFocus( FocusNode());
+                            FocusScope.of(context).requestFocus(FocusNode());
                             description.clear();
                             title.clear();
                           });
@@ -158,14 +162,16 @@ class _AddNewNoteState extends State<AddNewNote> {
     );
   }
 
-  Widget buildColorPicker() => ColorPicker(
-        pickerColor: pickerColor,
-        showLabel: false,
-        enableAlpha: false,
-        onColorChanged: (color) => setState(() {
-          pickerColor = color;
-        }),
-      );
+  Widget buildColorPicker() {
+    return ColorPicker(
+      pickerColor: pickerColor,
+      showLabel: false,
+      enableAlpha: false,
+      onColorChanged: (color) => setState(() {
+        pickerColor = color;
+      }),
+    );
+  }
 
   pickColor(BuildContext context) => showDialog(
         context: context,
@@ -173,6 +179,7 @@ class _AddNewNoteState extends State<AddNewNote> {
           title: CustomText(
             text: 'Pic your color',
             color: Colors.black,
+            size: 34,
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -190,4 +197,3 @@ class _AddNewNoteState extends State<AddNewNote> {
         ),
       );
 }
-
